@@ -6,12 +6,13 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class Vertex {
+public class Vertex implements Comparable<Vertex>, Heapable {
     private String name;
     private Integer number;
     private Map<Vertex, Integer> edges;
     private Map<Integer, Integer> prePopulatedEdges;
     private Integer distance;
+    private Integer heapPosition;
 
 
     public Vertex(String name, Integer number, Map<Integer, Integer> edges) {
@@ -38,24 +39,12 @@ public class Vertex {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public Integer getNumber() {
         return number;
     }
 
-    public void setNumber(Integer number) {
-        this.number = number;
-    }
-
     public Map<Vertex, Integer> getEdges() {
         return edges;
-    }
-
-    public void setEdges(Map<Vertex, Integer> edges) {
-        this.edges = edges;
     }
 
     public Integer getDistance() {
@@ -66,12 +55,12 @@ public class Vertex {
         this.distance = distance;
     }
 
-    public Map<Integer, Integer> getPrePopulatedEdges() {
-        return prePopulatedEdges;
+    public Integer getHeapPosition() {
+        return heapPosition;
     }
 
-    public void setPrePopulatedEdges(Map<Integer, Integer> prePopulatedEdges) {
-        this.prePopulatedEdges = prePopulatedEdges;
+    public void setHeapPosition(Integer heapPosition) {
+        this.heapPosition = heapPosition;
     }
 
     @Override
@@ -100,5 +89,10 @@ public class Vertex {
                 ", prePopulatedEdges=" + prePopulatedEdges +
                 ", distance=" + distance +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Vertex o) {
+        return this.getDistance().compareTo(o.getDistance());
     }
 }

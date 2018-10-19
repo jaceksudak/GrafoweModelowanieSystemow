@@ -26,6 +26,7 @@ public class GraphSolver {
                     Integer possibleNewDistance = analyzedVertex.getDistance() + distance;
                     if (currentDistance > possibleNewDistance) {
                         vertex.setDistance(possibleNewDistance);
+                        graph.getUnvisited().shiftUp(vertex.getHeapPosition());
                     }
                 });
     }

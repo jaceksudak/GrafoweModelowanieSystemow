@@ -10,15 +10,6 @@ public class GraphPrinter {
         this.out = out;
     }
 
-    public void printGraph(Graph graph) {
-        for (Vertex vertex : graph.getVertices()) {
-            out.println(vertex);
-        }
-        out.println("solution " + graph.getSolution());
-        out.println("target " + graph.getTarget());
-        out.print("\n");
-    }
-
     public void printSolution(Graph graph) {
         out.println(graph.getSolution());
     }

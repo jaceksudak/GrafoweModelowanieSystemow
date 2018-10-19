@@ -35,7 +35,6 @@ public class Dijkstra {
                 graphReader.readTask(graph);
                 graphSolver.solve();
                 graphPrinter.printSolution(graph);
-//                graphPrinter.printGraph(graph);
                 graph.reset();
             }
         }

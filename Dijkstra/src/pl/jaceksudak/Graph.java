@@ -1,18 +1,16 @@
 package pl.jaceksudak;
 
-import java.util.Comparator;
-import java.util.HashSet;
 import java.util.Set;
 
 public class Graph {
     private Set<Vertex> vertices;
-    private Set<Vertex> unvisited;
+    private MyHeap<Vertex> unvisited;
     private Vertex target;
 
 
     public Graph(Set<Vertex> vertices) {
         this.vertices = vertices;
-        this.unvisited = new HashSet<>(vertices);
+        this.unvisited = new MyHeap<>(new Vertex[20002]);
         for (Vertex vertex : vertices) {
             vertex.postPopulateEdges(vertices);
         }
@@ -22,14 +20,14 @@ public class Graph {
         return vertices;
     }
 
-    public Vertex getTarget() {
-        return target;
-    }
-
     public void setTarget(String target) {
         this.target = vertices.stream()
                 .filter(v -> v.getName().equals(target))
                 .findFirst().get();
+    }
+
+    public MyHeap<Vertex> getUnvisited() {
+        return unvisited;
     }
 
     public void setStart(String start) {
@@ -37,6 +35,12 @@ public class Graph {
                 .filter(v -> v.getName().equals(start))
                 .findFirst().get();
         startVertex.setDistance(0);
+        vertices.remove(startVertex);
+        unvisited.addNode(startVertex);
+        for (Vertex vertex : vertices) {
+            unvisited.addNode(vertex);
+        }
+        vertices.add(startVertex);
     }
 
     public int getSolution() {
@@ -47,26 +51,11 @@ public class Graph {
         for (Vertex vertex : vertices) {
             vertex.setDistance(Integer.MAX_VALUE);
         }
-        this.unvisited = new HashSet<>(vertices);
+        this.unvisited = new MyHeap<>(new Vertex[20002]);
         this.target = null;
     }
 
     public Vertex getFirstUnvisited() {
-        Vertex vertex = unvisited.stream()
-                .min(new VertexComparator())
-                .orElseThrow(() -> new IllegalStateException("unvisited nie ma min"));
-        unvisited.remove(vertex);
-        return vertex;
-    }
-
-    private class VertexComparator implements Comparator<Vertex> {
-        @Override
-        public int compare(Vertex o1, Vertex o2) {
-            if (o1.getDistance().equals(o2.getDistance())) {
-                return o1.getNumber().compareTo(o2.getNumber());
-            } else {
-                return o1.getDistance().compareTo(o2.getDistance());
-            }
-        }
+        return unvisited.extractRoot();
     }
 }
